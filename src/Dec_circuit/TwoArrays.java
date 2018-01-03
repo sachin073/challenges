@@ -36,12 +36,12 @@ public class TwoArrays {
 
     static int[] arrayA = null;
     static int[] arrayB = null;
-
+    static int sizeOfA,sizeOfB,k;
     public static void main(String[] args) {
 
         BufferedReader inpReader  = new BufferedReader(new InputStreamReader(System.in));
 
-        int sizeOfA,sizeOfB,k;
+
         String temp= null;
         try {
             temp = inpReader.readLine();
@@ -60,12 +60,14 @@ public class TwoArrays {
             int i=0;
             for (String string :temp.split(" ")) {
                 arrayA[i]=Integer.parseInt(string.trim());
+                i++;
             }
 
             temp = inpReader.readLine();
             i=0;
             for (String string :temp.split(" ")) {
                 arrayB[i]=Integer.parseInt(string.trim());
+                i++;
             }
 
         } catch (IOException e) {
@@ -74,33 +76,69 @@ public class TwoArrays {
 
         HashSet<String> sampleSpace = new HashSet<>();
 
-        int[] tempSpace = new int[sizeOfA];
-        for (int i = 0; i < sizeOfA; i++) { //
-             //fill array from 0 to iteration
-            for (int j = 0; j ==i ; j++) {
-                tempSpace[j] = arrayA[j];
-            }
+        int[] tempSpace =null;
+        int matchCount=0;
+        for (int m = 0; m < sizeOfA; m++) {
+            tempSpace = new int[m + 1];
+            for (int i = 0; i < sizeOfA; i++) { //
+                //fill array start from i to size of tempSpace
+                for (int x=i,loc=0; loc < tempSpace.length && x < arrayA.length ; x++,loc++ ) {
+                    tempSpace[loc]=arrayA[x];
+                }
 
-            for (int x = 0; x < sizeOfB; x++) {
+                int[] copyOfB = arrayB.clone();
+                int x = findMatchings(tempSpace, copyOfB);
+
+                while (x != -1) {
+                    matchCount++;
+                    copyOfB[x] = -1;
+                    x = findMatchings(tempSpace, copyOfB);
+                }
 
             }
         }
+
+        System.out.println("<><><count match>"+matchCount);
+
     }
 
-    private static int findMatchings(int[] matcher ){
-     int [] copyOfB = arrayB.clone();
-        int sizeofB= copyOfB.length;
-        int sizeOfMatcher= matcher.length;
-        //find one pattern and remove one from start or remove from till start of found -1
-        for (int i = 0; i < sizeofB ; i++) {
-            for (int j = 0; j < sizeOfMatcher ; j++) {
-                    if (copyOfB[i] == matcher[j]){
 
+    // if -1 no match found else match stating index
+    private static int findMatchings(int[] matcher,int[] arrayB){
+        int sizeOfMatcher= matcher.length;
+
+        //find one pattern and remove one from start or remove from till start of found -1
+        for (int i = 0; i < matcher.length; i++) {
+
+            for (int j = 0; j < sizeOfB ; j++) {
+                if (arrayB[j] == matcher[i]){
+                        int arrayIndex=j;
+                        boolean match=true;
+                        int matcherIndex=i;
+                        int timesMatchCount=0;
+                        boolean actualMatch = false;
+                        while(match && matcherIndex < sizeOfMatcher ){
+                            timesMatchCount++;
+                            if (arrayB[arrayIndex]==matcher[matcherIndex]){
+                                match = true;
+                                arrayIndex++;
+                                matcherIndex++;
+                            }else {
+                                match = false;
+                            }
+                            if (timesMatchCount==k) {
+                                actualMatch=true;
+                                break;
+                            }
+                        }
+                        if (actualMatch && (sizeOfMatcher <= sizeOfB-(j) )){  //size of matcher and array is equal
+                            return j;
+                        }
                     }
             }
         }
 
-        return 0;
+        return -1;
     }
 
 

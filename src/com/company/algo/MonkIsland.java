@@ -48,10 +48,12 @@ public class MonkIsland {
     MonkIsland(int size){
     this.graphSize =size;
     adjList = new LinkedList[graphSize];
-    visited =  new boolean[this.graphSize];
+
+        //visited =  new boolean[this.graphSize];
        /* for (LinkedList<Integer> list :adjList  ) {
             list = new LinkedList<>();
         }*/
+
         for (int i=0; i<graphSize; ++i)
             adjList[i] = new LinkedList();
     }
@@ -88,9 +90,11 @@ public class MonkIsland {
 
                 //System.out.println("\n\n "+ monk.adjList);
                 // solve BFS
-               monk.BFS(0,-1);
+                //monk.visited[0]=true;
+               //monk.BFS(0,0);
+                monk.BFS(0);
 
-
+                System.out.println(monk.depth+1);
                 test--;
             }
 
@@ -103,18 +107,20 @@ public class MonkIsland {
 
     }
     boolean visited[] =null;
-    int depth = 0;
+
+    int depth = 999999999;
+
     // search in tree max value
-    void BFS( int x,int depth){
+    // partial correct function
+    void DFS( int x,int depth){
 
         depth++;
 
         // Create a queue for BFS
         LinkedList<Integer> queue = new LinkedList<Integer>();
 
-      //  visited[x]=true;
+      visited[x]=true;
         queue.add(x);
-        //while (queue.size() != 0) {
 
            int now = queue.poll();
            // System.out.print(now + " ");
@@ -130,20 +136,72 @@ public class MonkIsland {
                     queue.add(n);
                 }
             }
-        //}
 
         while (queue.size() !=0){
             if (queue.peek() == this.graphSize-1){
-                System.out.println( "<<11>>"+depth );
-                break;
+                if(this.depth > depth || this.depth == 999999999) {
+                    this.depth = depth;
+                }
             }
 //            System.out.println( depth + " << depth || MAX >>"+queue.peek() );
 
-            BFS(queue.poll(),depth+1);
+            DFS(queue.poll(),depth);
         }
+    }
 
-        //return depth;
 
+    void BFS(int s)
+    {
+        // Mark all the vertices as not visited(By default
+        // set as false)
+        boolean visited[] = new boolean[this.graphSize];
+
+        // Create a queue for BFS
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+
+        // Mark the current node as visited and enqueue it
+        visited[s]=true;
+        queue.add(s);
+        queue.add(-1);
+        int depth = 0;
+
+        while (queue.size() != 0)
+        {
+
+            // Dequeue a vertex from queue and print it
+            s = queue.poll();
+           // System.out.print(s+" ");
+            if (s==-1){
+                depth++;
+                queue.add(-1);
+                if (queue.peek()==-1){
+                    //no more node exists
+                    break;
+                }
+                continue;
+            }
+            // Get all adjacent vertices of the dequeued vertex s
+            // If a adjacent has not been visited, then mark it
+            // visited and enqueue it
+            Iterator<Integer> i = adjList[s].listIterator();
+            while (i.hasNext())
+            {
+                int n = i.next();
+
+                if (n == this.graphSize-1 && !visited[n] ){
+                    this.depth = depth;
+                   // System.out.println("came ");
+                }
+
+                if (!visited[n])
+                {
+                    visited[n] = true;
+                    queue.add(n);
+                }
+            }
+
+
+        }
     }
 
 }

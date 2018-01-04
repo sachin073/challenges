@@ -150,6 +150,12 @@ public class MonkIsland {
     }
 
 
+    /**
+     * way to find depth inc point is add special -1 at end of adding neighbour nodes
+     * and if -1 come add another -1 with depth++.
+     *
+     * if 2 time -1 occur consecutively its end of queue.
+     * */
     void BFS(int s)
     {
         // Mark all the vertices as not visited(By default

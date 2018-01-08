@@ -3,6 +3,7 @@ package cogoport;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 import java.util.*;
 
 /**
@@ -76,17 +77,20 @@ import java.util.*;
  solution thesis: we using brute form >>
  as question says k must has to have one 0,1  and we need to give priority to max zero set of k
 
- so we make set of permutations possible k and make fit in N size array
+ so we make set of permutations possible k and make fit in N size array : find int of 10000 and count++ to 11111
 
  Now check if its palindrome
 
+
+ defect : work only for low values : below 200
  */
 
 
 public class Symmetry {
 
 
-
+static  int N,K;
+static char[] mainArray;
     public static void main(String[] args) {
 
         String inp="";
@@ -99,13 +103,16 @@ public class Symmetry {
             while (test > 0){
 
                 inp = inpReader.readLine();
-                int N = Integer.parseInt(inp.split(" ")[0]);
-                int K = Integer.parseInt(inp.split(" ")[1]);
-                char[] mainArray = new char[N];
+                 N = Integer.parseInt(inp.split(" ")[0]);
+                 K = Integer.parseInt(inp.split(" ")[1]);
+                 mainArray = new char[N];
+                repeat = new LinkedHashSet<>();
 
-                Set<String> tryset = makeRepeatSet(K);
+                makeRepeatSet(K);
 
-                for (String trial : tryset) {
+                //Set<String> tryset = makeRepeatSet(K);
+            boolean found = false;
+                for (String trial : repeat) {
                     char[] temp = trial.toCharArray();
 
                     for (int i = 0; i < N; i=i+K) {
@@ -122,11 +129,13 @@ public class Symmetry {
 
                     if (isPalindrome(mainArray)){
                         System.out.println("  found >> "+String.valueOf(mainArray));
+                        found = true;
                         break;
                     }
                 }
                 test --;
             }
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,37 +165,87 @@ public class Symmetry {
 
 
     // find all permutation of K array
+    static Set<String> repeat = new LinkedHashSet<>();
 
-    static Set<String> makeRepeatSet(int sizeOfRepeat){
-        Set<String> repeat = new LinkedHashSet<>();
+    static void makeRepeatSet(int sizeOfRepeat){
 
-        int[] x = new int[sizeOfRepeat];
-        x[0]=1;
+        int[] baseSet= new int[sizeOfRepeat];
+        baseSet[0] = 1;
+        StringBuilder temp=new StringBuilder();
+        for (int x :baseSet) {
+            temp.append(x);
+        }
+        long start = Long.parseLong(temp.toString(),2); //ByteBuffer.wrap(baseSet).getInt();
 
-        int countOfOne=1;           // 1000
-        while (countOfOne <= sizeOfRepeat-1){
+        int[] max = new int[sizeOfRepeat];
+        Arrays.fill(max,1);
+         temp=new StringBuilder();
+        for (int x :max) {
+            temp.append(x);
+        }
+        long maxVal = Long.parseLong(temp.toString(),2);//ByteBuffer.wrap(max).getInt();
 
-            for (int i = 0; i < x.length-1; i++) {
-                x[i] = 1;
-                StringBuilder temp = new StringBuilder(sizeOfRepeat);
-                for (int num : x) {
-                    temp.append(num);
+        boolean found=false;
+        while (start < maxVal){
+           // repeat.add( Integer.toBinaryString(start));
+            String trial = Long.toBinaryString(start);
+            char[] tempx = trial.toCharArray();
+            for (int i = 0; i < N; i=i+K) {
+
+                for (int j = 0; j < tempx.length; j++) {
+                    if (N  > (i+j) ){
+                        mainArray[i + j] = tempx[j];
+                    }
+
                 }
-                repeat.add(temp.toString());
             }
 
+            if (isPalindrome(mainArray)){
+                found = true;
+                System.out.println("  found >> "+String.valueOf(mainArray));
+                break;
+            }
+
+            start++;
         }
 
- /*       for (int i = 0; i < x.length-1; i++) {
-            x[i] = 1;
-            StringBuilder temp = new StringBuilder(sizeOfRepeat);
-            for (int num : x) {
-                temp.append(num);
-            }
-            repeat.add(temp.toString());
-        }
-*/
-        return repeat;
+        if (!found)
+            System.out.println(" Impossible");
     }
+
+
+
+    void permute(String str,int l , int r){
+
+        if (l == r)
+            //System.out.println(str);
+            repeat.add(str);
+        else
+        {
+            for (int i = l; i <= r; i++)
+            {
+                str = swapChars(str,l,i);
+                permute(str, l+1, r);
+                str = swapChars(str,l,i);
+            }
+        }
+
+
+    }
+
+
+    /**
+     * swap chars at loc i and j
+    */
+    private String swapChars(String inp , int i ,int j){
+        char[] realData= inp.toCharArray();
+        char temp =realData[i];
+
+        realData[i] = realData[j];
+        realData[j] = temp;
+
+        return String.valueOf(realData);
+    }
+
 
 }

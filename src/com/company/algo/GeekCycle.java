@@ -13,6 +13,10 @@ import java.util.LinkedList;
  *
  *      ### Detect Cycle in a Directed Graph #####
  *
+ *      ## solution ##
+ *      take a list of visited vertices .
+ *      perform DFS on all vertices, if a edge found which connect a already visited node then it has a cycle
+ *
  */
 public class GeekCycle {
 
@@ -86,15 +90,10 @@ public class GeekCycle {
         boolean[] visited =new boolean[nodes];
 
 
-
-
         for (int i = 0; i < adjList.length; i++) {
-
             if (!visited[i]){
                 DFSUtil(source,visited);
-
             }
-
         }
 
     }

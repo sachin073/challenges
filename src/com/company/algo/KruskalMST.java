@@ -22,6 +22,12 @@ public class KruskalMST {
             public int compareTo(Edge o) {
                 return this.weight - ((Edge)o).weight ;
             }
+
+
+            @Override
+            public String toString() {
+                return " src >>"+src+ " | dest >>"+dest+" |weight >"+weight;
+            }
         }
 
 
@@ -70,7 +76,7 @@ public class KruskalMST {
             graph.edge[4].src = 2;
             graph.edge[4].dest = 3;
             graph.edge[4].weight = 4;
-            System.out.println( graph.containCycle(graph));
+            //System.out.println( graph.containCycle(graph));
 
 
             graph.MST(graph);
@@ -103,8 +109,8 @@ public class KruskalMST {
             for (int i = 0; i < edgeCount; i++) {
                 Edge edge=  graph.edge[i];
 
-                int x = graph.find(parent, selectedEdges[i].src);
-                int y = graph.find(parent, selectedEdges[i].dest);
+                int x = graph.find(parent, edge.src);
+                int y = graph.find(parent, edge.dest);
                 System.out.println(Arrays.toString(parent));
                 if (x != y) {
                     graph.Union(parent, x, y);

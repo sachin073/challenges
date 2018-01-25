@@ -1,11 +1,9 @@
 package jan_circuit;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Set;
 
 /**
  * Created by sachin on 24/1/18.
@@ -37,16 +35,17 @@ public class BuyingItems {
                 String sellerItms = inp.substring(0,inp.lastIndexOf(" "));
                 sellerItms = sellerItms.replaceAll(" ","");
                 sellers[i] = sellerItms;
-                long c = Long.parseLong(inp.substring(inp.length() -1,inp.length()));
+                long c = Long.parseLong(inp.substring(inp.lastIndexOf(" ")+1,inp.length()));
                 sellerPrice[i] = c;
             }
+
 
             System.out.println(Arrays.toString(sellers));
             System.out.println(Arrays.toString(sellerPrice));
 
             String[] powerSet =  getPowerSet(sellerCount);
 
-            long [] setSum = new long[powerSet.length];
+            long [] setSum = new long[1<<sellerCount];
 
             int x=-1;
             long min=-1;
@@ -56,11 +55,11 @@ public class BuyingItems {
                     continue;
                 }
 
-                String[] sellersSet = sellerSet.split(",");
+                String[] sellersSet = sellerSet.split(",");  // combination seller range from 0-sellerCount
                 String prevSet="",nowSet="";
 
 
-                for (int i = 0; i < sellersSet.length; i++) {
+                for (int i = 0; i < sellersSet.length; i++) {   //0 - 2
 
                     setSum[x] += sellerPrice[Integer.parseInt(sellersSet[i])];
 
@@ -80,7 +79,8 @@ public class BuyingItems {
                             }
                         }
 
-                        prevSet = output.toString();
+                       // prevSet = output.toString();
+                        prevSet = String.valueOf(output);
                     }
                 }
                 if (prevSet.contains("0")){
@@ -88,11 +88,10 @@ public class BuyingItems {
                 }
 
                 if (setSum[x] !=0 && setSum[x] != -1 && min == -1) {
-                    min=setSum[x];
-
+                    min = setSum[x];
                 }
 
-                if (setSum[x] !=0 && setSum[x] != -1 && setSum[x]<min){
+                if (setSum[x] !=0 && setSum[x] != -1 && setSum[x] < min){
                         min = setSum[x];
                 }
 
@@ -105,6 +104,8 @@ public class BuyingItems {
             System.out.println(min);
 
         } catch (IOException  e) {
+            e.printStackTrace();
+        }catch (IndexOutOfBoundsException e ){
             e.printStackTrace();
         }
 

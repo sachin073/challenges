@@ -71,7 +71,12 @@ public class BuyingItems {
                             char[] prevCharArray = prevSet.toCharArray();
                             char[] nowCharArray = nowSet.toCharArray();
                             char[] output = new char[items];
+                        System.out.println(prevSet + " <> "+nowSet);
                         for (int j = 0; j < items; j++) {
+                            if(j > prevCharArray.length-1 || j > nowCharArray.length-1){
+                                output[j] = '0';
+                                continue;
+                            }
                             if ('1'==prevCharArray[j] || '1'== nowCharArray[j]) {
                                 output[j] = '1';
                             }else {

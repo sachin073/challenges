@@ -20,6 +20,12 @@ import java.io.IOException;
      h: d^(m-1)
  *
  *
+ *
+ * Key takeAway
+ *
+ * hash is calculated of total window in fixed way. If abc has hash 5 and bac will have 6 or so hash value.
+ * 
+ *
  */
 
 public class RabinKarpSearch {

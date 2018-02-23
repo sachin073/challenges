@@ -1,9 +1,9 @@
 5
 windows 2 32 100 100
-windows 4 64 10 52
-windows 2 32 100 900
-ios 2 32 20 63
-ios 2 32 10 13
+windows 2 32 200 500
+windows 2 32 200 600
+windows 2 32 500 900
+windows 2 32 200 900
 5
 windows 2 32 500
 windows 2 32 70

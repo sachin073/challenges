@@ -1,5 +1,7 @@
 package tinkers;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Created by fran on 1/10/18.
  */
@@ -23,8 +25,26 @@ public class Supreme {
 
     }
 
+    private static void dum(Tink tx){
+        tx=Tink.ti;
+    }
+
+
     public static void main(String[] args) {
 
+
+/*        BaseInterface bi = new BaseInterface() {
+            @Override
+            public String getMyName() {
+                return "22";
+            }
+        };*/
+
+    Tink.x=2;
+
+
+        // Tink t= Tink.ti;
+            //System.out.println(t.x);
     }
 
 }

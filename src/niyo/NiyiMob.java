@@ -20,22 +20,133 @@ public class NiyiMob {
     static BufferedReader inpReader = new BufferedReader(new InputStreamReader(System.in));
 
     public static void main(String[] args) {
-
+        int test=0;
         try {
             inpReader = new BufferedReader(new FileReader("src/file_input_package/input.txt"));
-            int test = Integer.parseInt(inpReader.readLine());
+             test = Integer.parseInt(inpReader.readLine());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        HashMap<String,HashMap<String,ArrayList<Phone> >> windowsPhone= new HashMap<>();
-        HashMap<String,HashMap<String,ArrayList<Phone>>> ios= new HashMap<>();
-        HashMap<String,HashMap<String,ArrayList<Phone>>> android= new HashMap<>();
+        HashMap<String, HashMap<String,SortedList<Phone>> > windowsPhone= new HashMap<>();
+        HashMap<String, HashMap<String,SortedList<Phone>> > ios= new HashMap<>();
+        HashMap<String, HashMap<String,SortedList<Phone>> > android= new HashMap<>();
+
+
+
+
+        while (test>0) {
+            try {
+                inp = inpReader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String[] inpArr = inp.split(" ");
+
+            if ("windows".equals(inpArr[0])){
+                fillShelve(windowsPhone,inpArr);
+
+            }else if ("ios".equals(inpArr[0])){
+                fillShelve(ios,inpArr);
+
+            }else if ("android".equals(inpArr[0])){
+                fillShelve(android,inpArr);
+
+            }
+            test--;
+        }
+
+        System.out.println(windowsPhone);
+
+        //take input
+        //get max value mobile
+        try {
+            test = Integer.parseInt(inpReader.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        while (test>0) {
+            try {
+                inp = inpReader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String[] inpArr = inp.split(" ");
+
+            if ("windows".equals(inpArr[0])){
+                getShelvePhone(windowsPhone,inpArr);
+
+            }else if ("ios".equals(inpArr[0])){
+                getShelvePhone(ios,inpArr);
+
+            }else if ("android".equals(inpArr[0])){
+                getShelvePhone(android,inpArr);
+
+            }
+            test--;
+        }
+
 
 
     }
 
+
+    private static void fillShelve(Map<String, HashMap<String,SortedList<Phone>>> shelve,String[] inpArr){
+        HashMap<String,SortedList<Phone>> ramMatch = shelve.get(inpArr[1]);
+
+        if (ramMatch != null){ // get match ram phone
+            SortedList<Phone> storageMatch = ramMatch.get(inpArr[2]);
+
+            if (storageMatch !=null){ //get match storage phone
+
+                SortedList<Phone> priceList = storageMatch;
+                priceList.add( new Phone( Integer.parseInt(inpArr[3]),Integer.parseInt(inpArr[4])));
+            }else {
+
+                storageMatch = new SortedList<>();
+                storageMatch.add(new Phone( Integer.parseInt(inpArr[3]),Integer.parseInt(inpArr[4])));
+                ramMatch.put(inpArr[2],storageMatch);
+
+            }
+        }else {
+
+            SortedList<Phone> tempList = new SortedList<>();
+            tempList.add( new Phone( Integer.parseInt(inpArr[3]),Integer.parseInt(inpArr[4])));
+
+            HashMap<String,SortedList<Phone>> tempMap = new HashMap<>();
+            tempMap.put(inpArr[2],tempList);
+
+            shelve.put(inpArr[1],tempMap);
+        }
+
+    }
+
+    private static void getShelvePhone(Map<String, HashMap<String,SortedList<Phone>>> shelve,String[] inpArr){
+        HashMap<String,SortedList<Phone>> ramMatch = shelve.get(inpArr[1]);
+        Phone phone=null;
+        if (ramMatch != null){ // get match ram phone
+            SortedList<Phone> storageMatch = ramMatch.get(inpArr[2]);
+
+            if (storageMatch !=null){ //get match storage phone
+
+                SortedList<Phone> priceList = storageMatch;
+                //priceList.add( new Phone( Integer.parseInt(inpArr[3]),Integer.parseInt(inpArr[4])));
+
+                for (Phone ph :priceList) {
+                    if (ph.getPrice()<Integer.parseInt(inpArr[3])){
+                        phone=ph;
+                    }else {
+                        break;
+                    }
+                }
+            }
+        }
+        if (phone !=null){
+            System.out.println(phone);
+        }else
+            System.out.println("phone not found");
+    }
 
 
     static class Phone implements Comparator<Phone>{
@@ -51,6 +162,10 @@ public class NiyiMob {
             return price;
         }
 
+        Phone(int price,int rating){
+            this.rating=rating;
+            this.price = price;
+        }
 
         /**
          * good = max rate and min price
@@ -58,14 +173,19 @@ public class NiyiMob {
         @Override
         public int compare(Phone m1, Phone m2)
         {
-            if (m1.getRating()/m1.getPrice() < m2.getRating()/m2.getPrice())
+            if(m1.getPrice()<m2.getPrice()){
                 return -1;
-            if (m1.getRating()/m1.getPrice() > m2.getRating()/m2.getPrice())
+            }else if(m1.getPrice()>m2.getPrice()){
                 return 1;
-            else
-                return 0;
+            }else {
+                if (m1.getRating() / m1.getPrice() < m2.getRating() / m2.getPrice())
+                    return -1;
+                if (m1.getRating() / m1.getPrice() > m2.getRating() / m2.getPrice())
+                    return 1;
+                else
+                    return 0;
+            }
         }
-
 
         @Override
         public String toString() {
@@ -75,14 +195,8 @@ public class NiyiMob {
 
 
 
-   static public class SortedList<E> extends AbstractList<E>{
+   static public class SortedList<E extends Comparator> extends AbstractList<E>{
         List<E> list = new ArrayList<>();
-
-        Comparator<E> comparator;
-        public SortedList(Comparator<E> comparator) {
-            this.comparator=comparator;
-            // TODO Auto-generated constructor stub
-        }
 
         @Override
         public E get(int index) {
@@ -101,7 +215,7 @@ public class NiyiMob {
         public boolean add(E e) {
             try {
                 list.add(e);
-                Collections.sort(list,this.comparator);
+                Collections.sort(list,e);
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();

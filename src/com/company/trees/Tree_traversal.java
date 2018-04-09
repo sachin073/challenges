@@ -1,5 +1,7 @@
 package com.company.trees;
 
+import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
@@ -46,6 +48,8 @@ public class Tree_traversal {
         System.out.println( "\n in-order traversal" );
         inOrder(root);
 
+        System.out.println( "\n level-order traversal " );
+        levelOrderTraversal(root);
     }
 
 
@@ -87,7 +91,28 @@ public class Tree_traversal {
 
 
     static void levelOrderTraversal(Node root){
-        Queue<Node> queue;
+        Queue<Node> queue =new LinkedList<>();
+        queue.add(root);
+        queue.add(new Node("separate")); // level separator
+        while (queue.size()>1 ){
+
+            Node thisNode = queue.poll();
+            if (thisNode==null){
+                continue;
+            }
+            if ("separate".equals(thisNode.nodeName)){
+                queue.add(new Node("separate")); // level separator
+                System.out.print(" ||new level || ");
+                continue;
+            }
+            System.out.print(thisNode.nodeName);
+            queue.add(thisNode.left);
+            queue.add(thisNode.right);
+
+
+
+        }
+
 
 
     }

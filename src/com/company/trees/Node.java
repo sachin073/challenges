@@ -7,7 +7,7 @@ public class Node {
     Node left;
     Node right;
     String nodeName;
-
+    int nodeDisplacement=0;  // can't use Anonymous class
     Node(String name){
         nodeName = name;
     }
@@ -16,5 +16,17 @@ public class Node {
         this.left= left;
         this.right=right;
         this.nodeName=nodeName;
+
+
     }
+
+    public void setNodeDisplacement(int nodeDisplacement) {
+        this.nodeDisplacement = nodeDisplacement;
+    }
+
+    public int getNodeDisplacement() {
+        return nodeDisplacement;
+    }
+
+
 }

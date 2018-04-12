@@ -1,3 +1,8 @@
+3 3 2
+O*O
+OOO
+*OO
+
 5
 windows 2 32 100 100
 windows 2 32 200 500

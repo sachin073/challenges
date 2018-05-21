@@ -44,6 +44,7 @@ public class Heapper {
 
         try {
 
+
             int[] baseHeap = {3, 5, 6, 8, 9, 9, 10, 12, 18, 20,2}; // {3,5,9,6,8,20,10,12,18,9};
 
             isMinHeap=(inpReader.readLine()=="true");
@@ -71,6 +72,8 @@ public class Heapper {
         //build min heap
 
     }
+
+
 
     static void buildMinHeap(int[] ints){
         int length =ints.length;

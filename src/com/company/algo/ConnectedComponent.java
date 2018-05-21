@@ -3,8 +3,7 @@ package com.company.algo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by sachin on 10/1/18.
@@ -49,7 +48,7 @@ public class ConnectedComponent {
 
 
     static LinkedList<Integer>[] adjList;
-
+    static  int nodes,edges;
 
     static private void addEdge(int to,int from){
         adjList[to].add(from);
@@ -65,7 +64,7 @@ public class ConnectedComponent {
 
         try {
             input = inpReader.readLine();
-            int nodes,edges;
+
 
             nodes = Integer.parseInt(input.split(" ")[0]);
             edges = Integer.parseInt(input.split(" ")[1]);
@@ -76,7 +75,6 @@ public class ConnectedComponent {
             for (int i = 0; i <adjList.length ; i++) {
                 adjList[i] = new LinkedList<>();
             }
-
             while (edges > 0){
                 input = inpReader.readLine();
 
@@ -87,6 +85,8 @@ public class ConnectedComponent {
 
             //graph created
 
+            // connected component by DFS
+            DFS();
 
 
         } catch (IOException e) {
@@ -95,5 +95,51 @@ public class ConnectedComponent {
 
 
     }
+
+    static void DFS(){
+
+        visitedNodes = new ArrayList<>(nodes);
+
+        boolean[] visited =new boolean[nodes];
+
+        int components=0;
+        for (int i = 0; i < adjList.length; i++) {
+
+            if (!visited[i]){
+                components++;
+                DFSUtil(i,visited);
+            }
+        }
+        System.out.println(components);
+        System.out.println(Arrays.toString(visited));
+
+    }
+
+    static ArrayList<Integer> visitedNodes;
+    static void DFSUtil(int node,boolean[] visited){
+
+        visited[node] = true;
+        visitedNodes.add(node);
+
+        if (visitedNodes.contains(node)){
+           // cycleFound = true;
+
+            System.out.println( " found at node " + node ); // cycle printing???
+        }
+
+        Iterator<Integer> list = adjList[node].listIterator();
+
+        while (list.hasNext()){
+
+            int i= list.next();
+            if (!visited[i]){
+                DFSUtil(i,visited);
+            }
+
+        }
+
+
+    }
+
 
 }

@@ -148,9 +148,7 @@ public class MattBook {
                     isConnected =false;
                     break;
                 }
-
                 first =true;
-
             }
         }
         if (isConnected){

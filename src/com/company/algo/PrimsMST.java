@@ -109,9 +109,6 @@ public class PrimsMST {
 
 
     public static void main(String[] args) {
-
-
-
         try {
 
             inpReader =  new BufferedReader(new FileReader("src/file_input_package/input.txt"));

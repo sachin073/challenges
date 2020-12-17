@@ -1,9 +1,5 @@
 package com.company.algo.ListDemo;
 
-import org.junit.Test;
-
-import java.util.List;
-
 /**
  * Created by fran on 2/23/18.
  create linked list of size @Size
@@ -101,7 +97,6 @@ public class ListBuilder {
         return "";
     }
 
-    @Test
     public void testList(){
 
         ListBuilder list = new ListBuilder();
@@ -138,6 +133,14 @@ public class ListBuilder {
         System.out.println(list);
         list.addNodeAt(new ListNode("new 1st Node"),1);
         System.out.println(list);
+    }
+
+
+    void printNodes(ListNode node){
+        while (node !=null){
+            System.out.println(node.nodeData);
+            node = node.nxtNodePointer;
+        }
     }
 
 

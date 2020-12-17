@@ -11,10 +11,10 @@ package com.company.algo.ListDemo;
 
 
 
-public class ListNode {
+public class ListNode implements Comparable{
 
-    private ListNode nxtNodePointer;
-    private String   nodeData;
+    public ListNode nxtNodePointer;
+    public String   nodeData;
 
     ListNode( String data){
         this.nxtNodePointer= null;
@@ -23,6 +23,11 @@ public class ListNode {
 
     public ListNode getnxtNodePointer() {
         return nxtNodePointer;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.nodeData.compareTo(((ListNode)o).nodeData);
     }
 
     public boolean setnxtNodePointer(ListNode node) {
@@ -35,7 +40,12 @@ public class ListNode {
         return true;
     }
 
-    public Object getNodeData() {
+    @Override
+    public boolean equals(Object obj) {
+        return this.nodeData.equals(((ListNode)obj).nodeData);
+    }
+
+    public String getNodeData() {
         return nodeData;
     }
 

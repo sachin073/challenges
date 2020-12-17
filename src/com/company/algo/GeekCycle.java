@@ -53,14 +53,10 @@ public class GeekCycle {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
 
     public static void main(String[] args) {
-
-
         try {
 
             nodes = Integer.parseInt(inpReader.readLine());
@@ -120,8 +116,6 @@ public class GeekCycle {
             }
 
         }
-
-
     }
 
 }
